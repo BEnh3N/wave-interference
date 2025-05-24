@@ -23,7 +23,7 @@ fn fragment(@location(0) world_position: vec4f) -> @location(0) vec4f {
     var value = 0.0;
     var near_slit = false;
 
-    for (var i: u32 = 0; i < p.num_slits; i++) {
+    for (var i: u32 = 0; i < p.num_slits; i++) {                    // loop through all slits
         let slit_pos = vec2f(start_pos + f32(i) * p.spacing, 0.0);  // get 2d position of the slit in space 
         let d = distance(pos, slit_pos);                            // find distance between slit pos and fragment
         
@@ -36,12 +36,13 @@ fn fragment(@location(0) world_position: vec4f) -> @location(0) vec4f {
     }
 
     value /= f32(p.num_slits);
-    var color = BLUE;
-    if sign(value) == -1 {
-        color = RED;
-    }
+
     if !near_slit {
-        return vec4f(color, value*value);
+        if sign(value) == 1 {
+            return vec4f(BLUE, value*value);
+        } else {
+            return vec4f(RED,  value*value);
+        }
     } else {
         return vec4f(1.0);
     }
