@@ -5,5 +5,5 @@ edition = "2024"
 
 [dependencies]
 bevy = "0.16"
-bevy_egui = "0.34.1"
-bevy_fly_camera = "0.16.0"
+bevy_egui = "0.34"
+bevy_fly_camera = "0.16"

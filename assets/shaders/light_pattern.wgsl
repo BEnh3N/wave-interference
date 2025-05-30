@@ -23,7 +23,7 @@ fn fragment(@location(0) world_position: vec4f) -> @location(0) vec4f {
     // where N is the number of waves, A_i and phi_i the amplitude and phase offset of the ith wave
     // i believe that this is a formula used for finding the combined amplitude of an arbitrary number of phasors,
     // but the only time i could find this function explitcily defined was asking google gemini about it...
-    // but hey, it works? 
+    // but hey, it works?
     // if anyone is somehow stumbing across this code and recognises this formula, please let me know, i'd love to learn more
 
     var cos_sum = 0.0;
@@ -32,7 +32,7 @@ fn fragment(@location(0) world_position: vec4f) -> @location(0) vec4f {
     for (var i: u32 = 0; i < p.num_slits; i++) {                            // loop through all slits
         let slit_pos = vec2f(start_pos + f32(i) * p.spacing, 0.0);          // get the 2d position of the slit in space
         let slit_distance = distance(pos, slit_pos);                        // find the distance between the slit and the fragment
-        let slit_amplitude = exp(-p.damping * slit_distance / p.velocity);  // get the amplitude of the wave at this distance 
+        let slit_amplitude = exp(-p.damping * slit_distance / p.velocity);  // get the amplitude of the wave at this distance
 
         let phi = TAU * slit_distance / p.wavelength;                       // find the relative phase offset based on distance from slit
 
@@ -41,6 +41,19 @@ fn fragment(@location(0) world_position: vec4f) -> @location(0) vec4f {
     }
 
     let amplitude_squared = (cos_sum * cos_sum + sin_sum * sin_sum) / f32(p.num_slits * p.num_slits);
+
+    // this is using the formula L * tan(arcsin(m * lambda / d)) for the locations of where the slits
+    // should be. only works well if the distance of the plane is quite far away due to assumptions
+    // made for this formula. one day i'll derive a formula that works even at small distances, but
+    // that's a later problem.
+
+    for (var i = -4; i <= 4; i++) {
+        let ideal_location = -world_position.z * tan(asin(f32(i) * p.wavelength / p.spacing));
+        let epsilon = -world_position.z * 0.0075;
+        if abs(world_position.x - ideal_location) < epsilon {
+            return vec4f(1.0);
+        }
+    }
 
     return vec4f(YELLOW, amplitude_squared);
 }

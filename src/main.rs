@@ -1,7 +1,6 @@
-use std::f32::consts::PI;
-
 use bevy::{prelude::*, window::WindowCloseRequested};
 use bevy_fly_camera::{FlyCamera, FlyCameraPlugin};
+use std::f32::consts::PI;
 use wave_interference::{
     shaders::{
         ShaderParams, ShaderPlugin, interference::InterferenceMaterial,

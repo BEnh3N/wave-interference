@@ -20,12 +20,21 @@ pub fn ui(
                 params.spacing = 0.25;
                 params.wavelength = 0.1;
                 params.damping = 0.003;
+                transform.translation.z = -2.0;
             }
             if ui.button("Double Slit").clicked() {
                 params.num_slits = 2;
                 params.spacing = 0.60;
                 params.wavelength = 0.20;
                 params.damping = 0.15;
+                transform.translation.z = -2.0;
+            }
+            if ui.button("Realistic...").clicked() {
+                params.num_slits = 2;
+                params.spacing = 0.1;
+                params.wavelength = 0.01;
+                params.damping = 0.0;
+                transform.translation.z = -128.0;
             }
         });
         egui::Grid::new("params_grid")
@@ -53,7 +62,7 @@ pub fn ui(
                 ui.end_row();
 
                 ui.monospace("Plane z");
-                ui.add(Slider::new(&mut transform.translation.z, -2.0..=0.0));
+                ui.add(Slider::new(&mut transform.translation.z, -128.0..=0.0));
                 ui.end_row();
             })
     });
